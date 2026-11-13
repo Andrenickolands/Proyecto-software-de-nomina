@@ -1,0 +1,16 @@
+flowchart LR
+  U[Navegador] -->|HTTPS| R
+  subgraph R[Render: un solo servicio web Docker]
+    direction TB
+    S[Express] --> ST[Archivos de React<br/>compilados con Vite]
+    S --> API["API REST /api"]
+    subgraph Capas
+      direction TB
+      H[interfaces/http<br/>rutas, Zod, JWT, Helmet] --> AP[application<br/>casos de uso]
+      AP --> DO[domain<br/>cálculo de nómina]
+      AP --> IN[infrastructure<br/>repositorios Knex]
+    end
+    API --> H
+  end
+  IN -->|SQL| DB[(PostgreSQL<br/>Render o Neon)]
+  IN -.->|en local| SQ[(SQLite)]

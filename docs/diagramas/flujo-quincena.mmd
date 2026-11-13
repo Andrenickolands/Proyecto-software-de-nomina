@@ -1,0 +1,20 @@
+flowchart TD
+  A([Inicio de la quincena]) --> B[Seleccionar o abrir la quincena<br/>en la barra lateral]
+  B --> C[Llenar asistencia con el<br/>horario de cada colaborador]
+  C --> D{¿Hubo faltas, permisos,<br/>incapacidades, licencias<br/>o vacaciones?}
+  D -- Sí --> E[Corregir el día o<br/>registrar por fechas]
+  E --> F
+  D -- No --> F[Agregar novedades:<br/>préstamos, vales, comisiones]
+  F --> G[La app calcula en vivo:<br/>horas, recargos, IBC, aportes,<br/>retención y forma de pago]
+  G --> H{¿Hay alertas?<br/>extras de más, salario bajo<br/>el mínimo, forma de pago}
+  H -- Sí --> I[Revisar y corregir]
+  I --> G
+  H -- No --> J[Liquidar quincena]
+  J --> K[(Se guarda la foto<br/>en liquidaciones)]
+  K --> L[Imprimir desprendibles<br/>y exportar CSV]
+  L --> M{¿Es la segunda<br/>quincena?}
+  M -- Sí --> N[Consolidado del mes:<br/>PILA y prestaciones]
+  M -- No --> O([Fin])
+  N --> O
+  K -. Si hay un error .-> P[Reabrir quincena]
+  P --> C
