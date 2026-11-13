@@ -1,0 +1,20 @@
+flowchart TD
+  A([Colaborador + asistencia + novedades]) --> B{Tipo de vinculación}
+  B -- Salario / Integral --> C[Días a pagar: 15 menos faltas,<br/>incapacidades y licencias]
+  B -- Jornal --> D[Días trabajados x valor del día]
+  B -- Prestación de servicios --> S[Honorarios por día<br/>sin aportes]
+  C --> E[Clasificar horas por minuto:<br/>ordinaria, extra, nocturna, dominical]
+  D --> E
+  E --> F[Valorar día por día con los<br/>parámetros vigentes de esa fecha]
+  F --> G[Sumar auxilio de transporte<br/>si gana hasta 2 mínimos]
+  G --> H[IBC: piso de 1 mínimo, techo de 25,<br/>regla del 40 %, 70 % en integral]
+  H --> I[Salud y pensión 4 %]
+  I --> J{¿Segunda quincena?}
+  J -- Sí --> K[FSP, retención en la fuente<br/>y cotización por semanas del jornal]
+  J -- No --> L
+  K --> L[Neto = devengado - deducciones]
+  S --> L
+  L --> M{Forma de pago}
+  M -- Diaria / Semanal --> N[Al cierre: neto - lo ya pagado]
+  M -- Quincenal --> O[Al cierre: el neto]
+  M -- Mensual --> P[Q1: nada / Q2: el mes completo]

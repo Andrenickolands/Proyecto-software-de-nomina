@@ -1,0 +1,114 @@
+classDiagram
+  direction LR
+  class usuarios {
+    +int id PK
+    +string email UNIQUE
+    +string nombre
+    +string password_hash
+    +string rol  admin | consulta
+  }
+  class sedes {
+    +int id PK
+    +string nombre
+    +string direccion
+    +string ciudad
+  }
+  class colaboradores {
+    +int id PK
+    +string documento UNIQUE
+    +string nombre
+    +string cargo
+    +int sede_id FK
+    +string tipo_vinculo  salario | integral | jornal | servicios
+    +string forma_pago  diaria | semanal | quincenal | mensual
+    +string tipo_contrato  indefinido | fijo | obra
+    +decimal salario_base
+    +decimal valor_dia
+    +string fecha_ingreso
+    +string fecha_retiro
+    +string fecha_fin_contrato
+    +int nivel_arl
+    +int dia_descanso
+    +string entrada / salida
+    +string entrada_dom / salida_dom
+    +int descanso_min
+    +decimal dias_vacaciones_tomadas
+    +int dependientes
+    +decimal intereses_vivienda
+    +decimal medicina_prepagada
+    +int activo
+  }
+  class periodos {
+    +int id PK
+    +int anio
+    +int mes
+    +int quincena  1 | 2
+    +string desde
+    +string hasta
+    +string estado  abierto | liquidado
+  }
+  class asistencia {
+    +int id PK
+    +int colaborador_id FK
+    +string fecha
+    +string estado
+    +string entrada
+    +string salida
+    +int descanso_min
+    +string observacion
+  }
+  class novedades {
+    +int id PK
+    +int colaborador_id FK
+    +int periodo_id FK
+    +string tipo
+    +decimal valor
+    +string descripcion
+  }
+  class liquidaciones {
+    +int id PK
+    +int periodo_id FK
+    +int colaborador_id
+    +json detalle
+    +decimal neto
+  }
+  class terminaciones {
+    +int id PK
+    +int colaborador_id FK
+    +string fecha_retiro
+    +string motivo
+    +json detalle
+    +decimal total
+  }
+  class parametros {
+    +int id PK
+    +string vigente_desde UNIQUE
+    +string nombre
+    +json valores
+  }
+  class festivos {
+    +string fecha PK
+    +string nombre
+  }
+  class ajustes {
+    +string clave PK
+    +json valor
+  }
+  class auditoria {
+    +int id PK
+    +int usuario_id
+    +string usuario_email
+    +string accion
+    +string entidad
+    +string entidad_id
+    +json detalle
+    +timestamp creado_en
+  }
+  sedes "1" --> "0..*" colaboradores : agrupa
+  colaboradores "1" --> "0..*" asistencia : registra
+  colaboradores "1" --> "0..*" novedades : tiene
+  periodos "1" --> "0..*" novedades : contiene
+  periodos "1" --> "0..*" liquidaciones : se guarda en
+  colaboradores "1" --> "0..*" liquidaciones : recibe
+  colaboradores "1" --> "0..1" terminaciones : se liquida en
+  usuarios "1" --> "0..*" auditoria : genera

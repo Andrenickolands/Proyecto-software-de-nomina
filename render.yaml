@@ -1,0 +1,34 @@
+# Render -> New -> Blueprint -> escoge el repositorio.
+# Crea dos cosas dentro de Render: la app (frontend + API en una sola URL) y la base de datos.
+services:
+  - type: web
+    name: proyecto-software-de-nomina
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nomina-db
+          property: connectionString
+      # la conexión entre la app y la base es por la red interna de Render
+      - key: DATABASE_SSL
+        value: "false"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SEED_DEMO
+        value: "true"
+
+databases:
+  - name: nomina-db
+    plan: free
+    databaseName: nomina
+    user: nomina
